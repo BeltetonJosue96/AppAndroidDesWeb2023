@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EstadoCuenta">
+
+    <TextView
+        android:id="@+id/text_cuenta"
+        android:layout_width="198dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="71dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="71dp"
+        android:text="Estado de Cuenta"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/regresar_escritorio4"
+        android:layout_width="135dp"
+        android:layout_height="88dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#E91E63"
+        android:text="Regresar"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/EstadoCuenta2023"
+        android:layout_width="229dp"
+        android:layout_height="232dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="33dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/regresar_escritorio4"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:srcCompat="@drawable/animacioncuenta" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="310dp"
+        android:layout_height="400dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="19dp"
+        app:layout_constraintBottom_toTopOf="@+id/EstadoCuenta2023"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_cuenta"
+        app:srcCompat="@drawable/saldo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Escritorio">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="71dp"
+        android:layout_marginTop="54dp"
+        android:layout_marginEnd="71dp"
+        android:text="Bienvenido(a) estudiante"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="158dp"
+        android:layout_marginEnd="158dp"
+        android:layout_marginBottom="40dp"
+        android:backgroundTint="#E91E63"
+        android:text="Salir"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/registros"
+        android:layout_width="128dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="162dp"
+        android:backgroundTint="#FFC107"
+        android:text="Registrar Interesado"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageSaludo" />
+
+    <Button
+        android:id="@+id/horarios"
+        android:layout_width="128dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="28dp"
+        android:text="Contacto"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/registros"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageSaludo" />
+
+    <Button
+        android:id="@+id/pensum"
+        android:layout_width="128dp"
+        android:layout_height="90dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="#F44336"
+        android:text="Pensum"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/horarios"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/notas"
+        android:layout_width="128dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="28dp"
+        android:backgroundTint="#8BC34A"
+        android:text="Admisión"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/pensum"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageSaludo" />
+
+    <ImageView
+        android:id="@+id/imageSaludo"
+        android:layout_width="234dp"
+        android:layout_height="304dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/pensum"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/saludo" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
