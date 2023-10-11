@@ -1,152 +1,155 @@
 package com.sistema.universidad
 
-import android.content.ContentValues
+import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
-import android.view.View
+import android.provider.MediaStore
+import android.util.Base64
+import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.Response
+import org.json.JSONObject
+import java.io.ByteArrayOutputStream
+import java.io.IOException
 
 class Editar : AppCompatActivity() {
     private lateinit var editNombre: EditText
-    private lateinit var editApellidos: EditText
+    private lateinit var editPriApellido: EditText
+    private lateinit var editSecApellido: EditText
     private lateinit var editEmail: EditText
     private lateinit var editTelefono: EditText
-    private lateinit var btnGuardarEdicion: Button
-
-    private lateinit var dbHelper: DBHelper
-    private var selectedItemID: Long = -1
-
-    fun validarCampos(): Boolean {
-        val nombre = editNombre.text.toString()
-        val apellidos = editApellidos.text.toString()
-        val correo = editEmail.text.toString()
-        val telefono = editTelefono.text.toString()
-
-        if (nombre.isEmpty() || apellidos.isEmpty() || correo.isEmpty() || telefono.isEmpty()) {
-            Toast.makeText(this, "Todos los campos son obligatorios", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        val emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"
-        if (!correo.matches(emailPattern.toRegex())) {
-            Toast.makeText(this, "El correo electrónico no es válido", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        if (telefono.length != 8 || !telefono.matches("\\d+".toRegex())) {
-            Toast.makeText(this, "El número de teléfono no es válido", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        return true
-    }
+    private lateinit var editDireccion: EditText
+    private lateinit var botonAdjuntarImagen: Button
+    private lateinit var botonguardar: Button
+    private var imagenBase64: String? = null
+    private val CODIGO_GALERIA = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_editar)
+        setContentView(R.layout.activity_registrar)
 
-        editNombre = findViewById(R.id.editNombre2)
-        editApellidos = findViewById(R.id.editApellidos2)
-        editEmail = findViewById(R.id.editEmail2)
-        editTelefono = findViewById(R.id.editTelefono2)
-        btnGuardarEdicion = findViewById(R.id.botonguardar2)
+        // Inicializar vistas
+        editNombre = findViewById(R.id.editNombre)
+        editPriApellido = findViewById(R.id.editPriApellido)
+        editSecApellido = findViewById(R.id.editSecApellido)
+        editEmail = findViewById(R.id.editEmail)
+        editTelefono = findViewById(R.id.editTelefono)
+        editDireccion = findViewById(R.id.editDireccion)
+        botonAdjuntarImagen = findViewById(R.id.botonAdjuntarImagen)
+        botonguardar = findViewById(R.id.botonguardar)
 
-        dbHelper = DBHelper(this)
-
-        // Obtener el ID del item seleccionado de la actividad anterior
-        selectedItemID = intent.getLongExtra("selectedItemID", -1)
-
-        // Obtener los datos del objeto seleccionado de la base de datos y completar los campos
-        val database = dbHelper.readableDatabase
-        val projection = arrayOf(
-            DBHelper.COLUMN_NOMBRE,
-            DBHelper.COLUMN_APELLIDOS,
-            DBHelper.COLUMN_CORREO,
-            DBHelper.COLUMN_TELEFONO
-        )
-        val selection = "${DBHelper.COLUMN_ID} = ?"
-        val selectionArgs = arrayOf(selectedItemID.toString())
-
-        val cursor = database.query(
-            DBHelper.TABLE_NAME,
-            projection,
-            selection,
-            selectionArgs,
-            null,
-            null,
-            null
-        )
-
-        if (cursor.moveToFirst()) {
-            editNombre.setText(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_NOMBRE)))
-            editApellidos.setText(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_APELLIDOS)))
-            editEmail.setText(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_CORREO)))
-            editTelefono.setText(cursor.getString(cursor.getColumnIndexOrThrow(DBHelper.COLUMN_TELEFONO)))
+        botonAdjuntarImagen.setOnClickListener {
+            abrirGaleria()
         }
-
-        cursor.close()
-        database.close()
-
-        btnGuardarEdicion.setOnClickListener {
+        botonguardar.setOnClickListener {
             if (validarCampos()) {
-                // Actualizar los datos en la base de datos
-                val database = dbHelper.writableDatabase
-                val values = ContentValues().apply {
-                    put(DBHelper.COLUMN_NOMBRE, editNombre.text.toString())
-                    put(DBHelper.COLUMN_APELLIDOS, editApellidos.text.toString())
-                    put(DBHelper.COLUMN_CORREO, editEmail.text.toString())
-                    put(DBHelper.COLUMN_TELEFONO, editTelefono.text.toString())
+                enviarDatos()
+            }
+        }
+    }
+
+    private fun abrirGaleria() {
+        val elegirDeGaleriaIntent = Intent(Intent.ACTION_GET_CONTENT)
+        elegirDeGaleriaIntent.type = "image/*"
+        startActivityForResult(elegirDeGaleriaIntent, CODIGO_GALERIA)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CODIGO_GALERIA && resultCode == Activity.RESULT_OK) {
+            val imagenUri = data?.data
+            val imagenBitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, imagenUri)
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            imagenBitmap.compress(Bitmap.CompressFormat.JPEG, 1, byteArrayOutputStream)
+            val byteArray = byteArrayOutputStream.toByteArray()
+            var imagenBase64 = Base64.encodeToString(byteArray, Base64.NO_WRAP)
+            imagenBase64 = "data:image/jpeg;base64," + imagenBase64
+            this.imagenBase64 = imagenBase64
+        }
+    }
+
+    private fun validarCampos(): Boolean {
+        val nombre = editNombre.text.toString()
+        val priApellido = editPriApellido.text.toString()
+        val secApellido = editSecApellido.text.toString()
+        val email = editEmail.text.toString()
+        val telefono = editTelefono.text.toString()
+        val direccion = editDireccion.text.toString()
+
+        if (nombre.isEmpty() || priApellido.isEmpty() || secApellido.isEmpty() || direccion.isEmpty()) {
+            Toast.makeText(this, "Por favor, rellene todos los campos.", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(
+                this,
+                "Por favor, introduzca un correo electrónico válido.",
+                Toast.LENGTH_SHORT
+            ).show()
+            return false
+        }
+
+        if (telefono.length != 8) {
+            Toast.makeText(this, "El número de teléfono debe tener 8 dígitos.", Toast.LENGTH_SHORT)
+                .show()
+            return false
+        }
+
+        if (imagenBase64 == null) {
+            Toast.makeText(this, "Por favor, adjunte una imagen.", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
+    }
+
+    private fun enviarDatos() {
+        val json = JSONObject()
+        json.put("Nombres", editNombre.text.toString())
+        json.put("PrimerApellido", editPriApellido.text.toString())
+        json.put("SegundoApellido", editSecApellido.text.toString())
+        json.put("CorreoElectronico", editEmail.text.toString())
+        json.put("Celular", editTelefono.text.toString())
+        json.put("Direccion", editDireccion.text.toString())
+        json.put("Foto", imagenBase64)
+
+        val requestBody = RequestBody.create("application/json; charset=utf-8".toMediaTypeOrNull(), json.toString())
+
+        val request = Request.Builder()
+            .url("http://104.198.132.229/api/agregar")
+            .post(requestBody)
+            .build()
+
+        OkHttpClient().newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                runOnUiThread {
+                    Toast.makeText(this@Editar, "Lo sentimos, no se pudo completar la petición", Toast.LENGTH_SHORT).show()
                 }
+            }
 
-                val selection = "${DBHelper.COLUMN_ID} = ?"
-                val selectionArgs = arrayOf(selectedItemID.toString())
-
-                val updatedRows = database.update(DBHelper.TABLE_NAME, values, selection, selectionArgs)
-                database.close()
-
-                if (updatedRows > 0) {
-                    Toast.makeText(
-                        this,
-                        "Los datos han sido actualizados correctamente",
-                        Toast.LENGTH_SHORT
-                    ).show()
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    val respuesta = JSONObject(response.body?.string())
+                    val mensaje = respuesta.getString("mensaje")
+                    runOnUiThread {
+                        Toast.makeText(this@Editar, mensaje, Toast.LENGTH_SHORT).show()
+                    }
                 } else {
-                    Toast.makeText(this, "No se pudieron actualizar los datos", Toast.LENGTH_SHORT)
-                        .show()
+                    runOnUiThread {
+                        Toast.makeText(this@Editar, "Lo sentimos, no se pudo completar la petición", Toast.LENGTH_SHORT).show()
+                    }
                 }
-                finish() // Volver a la actividad anterior
             }
-        }
-
-        // Después de inicializar tu botón de eliminar
-        val botonEliminar = findViewById<Button>(R.id.botonEliminar)
-
-        botonEliminar.setOnClickListener {
-            // Eliminar el registro de la base de datos
-            val database = dbHelper.writableDatabase
-            val selection = "${DBHelper.COLUMN_ID} = ?"
-            val selectionArgs = arrayOf(selectedItemID.toString())
-
-            val deletedRows = database.delete(DBHelper.TABLE_NAME, selection, selectionArgs)
-            database.close()
-
-            if (deletedRows > 0) {
-                Toast.makeText(this, "El registro ha sido eliminado", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "No se pudo eliminar el registro", Toast.LENGTH_SHORT).show()
-            }
-
-            finish() // Volver a la actividad anterior
-        }
-
-        //botón regresar
-        val bRegresar=findViewById<Button>(R.id.regresar_escritorio8)
-        bRegresar.setOnClickListener(View.OnClickListener {
-            val intent = Intent(this,Listar::class.java)
-            startActivity(intent)
         })
     }
 }
