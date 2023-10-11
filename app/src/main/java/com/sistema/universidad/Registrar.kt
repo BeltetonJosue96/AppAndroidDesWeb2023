@@ -7,12 +7,16 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 
 class Registrar : AppCompatActivity() {
     private lateinit var editNombre: EditText
     private lateinit var editApellidos: EditText
+    private lateinit var editSecApellido: EditText
     private lateinit var editEmail: EditText
     private lateinit var editTelefono: EditText
+    private lateinit var editDireccion: EditText
+
     private lateinit var botonguardar: Button
 
     fun validarCampos(): Boolean {
