@@ -12,12 +12,7 @@ class RegistroNuevos : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro_nuevos)
-        //botón regresar
-        val bRegresar=findViewById<Button>(R.id.regresar_escritorio5)
-        bRegresar.setOnClickListener(View.OnClickListener {
-            val intent = Intent(this,Escritorio::class.java)
-            startActivity(intent)
-        })
+
         //Botón para Registrar
         val bRegistar=findViewById<Button>(R.id.registrar)
         bRegistar.setOnClickListener(View.OnClickListener {
