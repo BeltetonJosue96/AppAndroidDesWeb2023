@@ -33,12 +33,6 @@ class Listar : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //botón regresar
-        val bRegresar=findViewById<Button>(R.id.regresar_escritorio7)
-        bRegresar.setOnClickListener(View.OnClickListener {
-            val intent = Intent(this,RegistroNuevos::class.java)
-            startActivity(intent)
-        })
     }
 
     private fun getDataFromDatabase(): List<String> {

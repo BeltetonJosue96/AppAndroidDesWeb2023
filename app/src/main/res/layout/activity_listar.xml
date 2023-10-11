@@ -19,25 +19,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/regresar_escritorio7"
-        android:layout_width="137dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginBottom="40dp"
-        android:backgroundTint="#E91E63"
-        android:text="Regresar"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <ListView
         android:id="@+id/listadatos"
-        android:layout_width="354dp"
-        android:layout_height="479dp"
-        app:layout_constraintBottom_toTopOf="@+id/regresar_escritorio7"
+        android:layout_width="366dp"
+        android:layout_height="603dp"
+        android:layout_marginTop="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
