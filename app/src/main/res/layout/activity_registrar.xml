@@ -19,20 +19,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/regresar_escritorio6"
-        android:layout_width="137dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginBottom="40dp"
-        android:backgroundTint="#E91E63"
-        android:text="Regresar"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
@@ -85,22 +71,21 @@
         android:id="@+id/editTelefono"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="125dp"
         android:ems="10"
         android:hint="Teléfono"
         android:inputType="phone"
-        app:layout_constraintBottom_toTopOf="@+id/regresar_escritorio6"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="467dp" />
 
     <Button
         android:id="@+id/botonguardar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
         android:backgroundTint="#009688"
-        android:text="Guardar"
         android:onClick="GuardarInteresado"
+        android:text="Guardar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTelefono" />

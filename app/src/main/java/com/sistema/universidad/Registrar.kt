@@ -14,7 +14,6 @@ class Registrar : AppCompatActivity() {
     private lateinit var editEmail: EditText
     private lateinit var editTelefono: EditText
     private lateinit var botonguardar: Button
-    private lateinit var regresar_escritorio6: Button
 
     fun validarCampos(): Boolean {
         val nombre = editNombre.text.toString()
@@ -53,7 +52,6 @@ class Registrar : AppCompatActivity() {
         editEmail=findViewById(R.id.editEmail)
         editTelefono=findViewById(R.id.editTelefono)
         botonguardar = findViewById(R.id.botonguardar)
-        regresar_escritorio6 = findViewById(R.id.regresar_escritorio6)
 
         botonguardar.setOnClickListener {
             if (validarCampos()) {
@@ -82,10 +80,7 @@ class Registrar : AppCompatActivity() {
                 }
             }
         }
-        regresar_escritorio6.setOnClickListener {
-            val intent = Intent(this, RegistroNuevos::class.java)
-            startActivity(intent)
-        }
+
     }
 
 }
