@@ -138,7 +138,7 @@ class Registrar : AppCompatActivity() {
         }
 
         val request = Request.Builder()
-            .url("http://104.198.132.229/api/agregar")
+            .url("http://crudyapibyjb.tech/api/agregar")
             .addHeader("Authorization", "Bearer $token")
             .post(requestBody)
             .build()

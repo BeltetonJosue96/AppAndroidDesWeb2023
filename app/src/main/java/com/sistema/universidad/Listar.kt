@@ -49,7 +49,7 @@ class Listar : AppCompatActivity() {
 
         // Crea un objeto Request
         val request = Request.Builder()
-            .url("http://104.198.132.229/api/consultar")
+            .url("http://crudyapibyjb.tech/api/consultar")
             .addHeader("Authorization", "Bearer $token")
             .get()
             .build()
